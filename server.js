@@ -44,7 +44,7 @@ var server = http.createServer(function(req, res){
   res.end(body);
 });
 
-server.listen(process.env.PORT || 5000, '127.0.0.1', function(){
+server.listen(process.env.PORT || 5000, '0.0.0.0', function(){
   var info = server.address();
   console.info('Server listening on: http://' + info.address + ':' + info.port);
 });
