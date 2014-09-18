@@ -1,18 +1,12 @@
 {
-  "name": "catz",
+  "name": "pyneme",
   "version": "0.0.0",
-  "description": "rando catz",
+  "description": "All the pynes",
   "main": "index.js",
   "scripts": {
-    "start": "npm run init && npm run app",
-    "init": "node catz.js",
-    "app": "node server.js",
+  	"start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Josh Gillies <npm@joshgilli.es> (http://joshgilli.es/)",
-  "license": "BSD",
-  "dependencies": {
-    "hyperquest": "^0.3.0",
-    "trumpet": "^1.6.5"
-  }
+  "author": "Masni Bennett <masni@masnibennett.com> (http://masnibennett.com/)",
+  "license": "BSD"
 }
