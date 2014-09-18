@@ -2,12 +2,12 @@ var fs = require('fs');
 var path = require('path');
 var http = require('http');
 
-var random = function random(min, max) {
-  return ~~(Math.random() * (max - min + 1)) + min;
+var random = function(min, max) {
+	return ~~(Math.random() * (max - min + 1)) + min;
 };
 
 
-var shuffle = function shuffle(o){ //v1.0
+var shuffle = function(o){ //v1.0
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
@@ -15,13 +15,9 @@ var shuffle = function shuffle(o){ //v1.0
 var source = "lib/assets/pynes.json"
 var images = [];
 
-
-
 fs.readFile(path.join(__dirname, source), function (err, data){
-	
 	if (err) { return console.log(err); }
-	images = JSON.parse(data);
-	
+	images = JSON.parse(data);	
 });
 
 var server = http.createServer(function(req, res){
@@ -30,7 +26,7 @@ var server = http.createServer(function(req, res){
   var pyne = '';
   var pynes = images.pynes;
   
-  // Request a specific pyne
+  // Serve a specific pyne
 
   if (/pyne/.test(req.url)) {
   	
@@ -38,28 +34,28 @@ var server = http.createServer(function(req, res){
   	var s = "/pyne/";
   	
   	// Find the requested pyne
-  	
   	var pos = url.indexOf(s);
   	var pkey = url.substr(pos + s.length, url.length);
-  	var pyne = pynes[pkey];
+  	
+  	pyne = pynes[pkey];
 
   	if (typeof pyne !== "undefined") {
 	  	
-	  	// Handle multi-pynes
-	  	if (Array.isArray(pyne)) {
-		  	pyne = pyne[random(0, pyne.length - 1)];
-	  	}
+	  	// Handle multi-pyne situations	  	
+	  	pyne = (Array.isArray(pyne)) ? pyne[random(0, pyne.length - 1)] : pyne;
 	  	
-		body += '{"pyne": "' + pyne + '"}';
+		body += '{ "pyne": "' + pyne + '", "name": "'+pkey+'" }';
 	  	
 	  	res.writeHead(200, {
 	        'Content-Length': body.length,
-	        'Content-Type': 'text/html' });
+	        'Content-Type': 'application/json' });
+	        
 	    return res.end(body); 
-
   	}
   	
   }
+  
+  // Serve a random pyne
   
   if (req.url === '/random') {
 
@@ -67,7 +63,12 @@ var server = http.createServer(function(req, res){
 	var pyneKeys = Object.keys(pynes);
 	shuffle(pyneKeys);
 	
-	body += '{"pyne": "' + pynes[pyneKeys[0]] + '"}';
+	pyne = pynes[pyneKeys[0]];
+	
+	// Handle multi-pyne situations	  	
+  	pyne = (Array.isArray(pyne)) ? pyne[random(0, pyne.length - 1)] : pyne;
+	
+	body += '{ "pyne": "' + pyne + '", "name": "'+pyneKeys[0]+'" }';
 
     res.writeHead(200, {
         'Content-Length': body.length,
@@ -78,7 +79,7 @@ var server = http.createServer(function(req, res){
   
   if (req.url === '/') {
 
-	body = "Get your pynes here."
+	body = "All the pynes."
     res.writeHead(200, {
         'Content-Length': body.length,
         'Content-Type': 'text/html' });
