@@ -87,7 +87,7 @@ var server = http.createServer(function(req, res){
     
   }  
 
-  body = '{ "pyne": '' }';
+  body = '{ "pyne": "" }';
   res.writeHead(404, {
       'Content-Length': body.length,
       'Content-Type': 'application/json' });
