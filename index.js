@@ -87,12 +87,12 @@ var server = http.createServer(function(req, res){
     
   }  
 
-  console.log('404');
-  body = 'No pynes found. :(';
+  body = '{ "pyne": '' }';
   res.writeHead(404, {
       'Content-Length': body.length,
-      'Content-Type': 'text/html' });
+      'Content-Type': 'application/json' });
   res.end(body);
+  
 });
 
 server.listen(process.env.PORT || 5000, '0.0.0.0', function(){
